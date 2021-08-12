@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DusunController;
 
 
 /*
@@ -21,3 +22,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
 Route::resource('auth', AuthController::class);
+Route::resource('dusun', DusunController::class);
