@@ -14,9 +14,22 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->input('api-key') != env('API_KEY')) {
+            $data = [
+                'success' => false,
+                'message' => 'Akses denied !',
+            ];
+            return response()->json($data, 404);
+        } else {
+            $data = [
+                'success' => true,
+                'message' => 'List ID akun',
+                'data' => Auth::all('id', 'username', 'name'),
+            ];
+            return response()->json($data, 200);
+        }
     }
 
     /**
@@ -27,6 +40,13 @@ class AuthController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->input('api-key') != env('API_KEY')) {
+            $data = [
+                'success' => false,
+                'message' => 'Akses denied !',
+            ];
+            return response()->json($data, 404);
+        }
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'username' => 'required|unique:auths,username',
@@ -84,9 +104,22 @@ class AuthController extends Controller
      * @param  \App\Models\Auth  $auth
      * @return \Illuminate\Http\Response
      */
-    public function show(Auth $auth)
+    public function show(Request $request, Auth $auth)
     {
-        //
+        if ($request->input('api-key') != env('API_KEY')) {
+            $data = [
+                'success' => false,
+                'message' => 'Akses denied !',
+            ];
+            return response()->json($data, 404);
+        } else {
+            $data = [
+                'success' => true,
+                'message' => 'Detail Akun',
+                'data' => $auth,
+            ];
+            return response()->json($data, 200);
+        }
     }
 
     /**
@@ -96,9 +129,49 @@ class AuthController extends Controller
      * @param  \App\Models\Auth  $auth
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Auth $auth)
+    public function update(Request $request, $id)
     {
-        //
+        if ($request->input('api-key') != env('API_KEY')) {
+            $data = [
+                'success' => false,
+                'message' => 'Akses denied !',
+            ];
+            return response()->json($data, 404);
+        }
+        $validator = Validator::make($request->all(), [
+            'password' => 'min:8|required_with:password_confirmation|confirmed',
+        ], [
+            'password.min' => 'Password minimal 8 karakter !',
+            'password.confirmed' => 'Password tidak cocok !'
+        ]);
+
+        if ($validator->fails()) {
+            $data = [
+                'success' => false,
+                'message' => 'Silahkan isi form dengan benar',
+                'data' => $validator->errors(),
+            ];
+            return response()->json($data, 400);
+        } else {
+            $update = [
+                'password' => $request->input('password'),
+            ];
+            $auth = Auth::find($id)->update($update);
+
+            if ($auth) {
+                $data = [
+                    'success' => true,
+                    'message' => 'Akun berhasil diupdate',
+                ];
+                return response()->json($data, 200);
+            } else {
+                $data = [
+                    'success' => false,
+                    'message' => 'Akun gagal diupdate',
+                ];
+                return response()->json($data, 404);
+            }
+        }
     }
 
     /**
@@ -107,9 +180,32 @@ class AuthController extends Controller
      * @param  \App\Models\Auth  $auth
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Auth $auth)
+    public function destroy(Request $request, $id)
     {
-        //
+        if ($request->input('api-key') != env('API_KEY')) {
+            $data = [
+                'success' => false,
+                'message' => 'Akses denied !',
+            ];
+            return response()->json($data, 404);
+        }
+
+        $auth = Auth::find($id);
+
+        if ($auth) {
+            $auth->delete();
+            $data = [
+                'success' => true,
+                'message' => 'Akun berhasil dihapus',
+            ];
+            return response()->json($data, 200);
+        } else {
+            $data = [
+                'success' => false,
+                'message' => 'Akun gagal dihapus',
+            ];
+            return response()->json($data, 404);
+        }
     }
 
     public function login(Request $request)

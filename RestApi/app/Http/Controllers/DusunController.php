@@ -32,6 +32,13 @@ class DusunController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->input('api-key') != env('API_KEY')) {
+            $data = [
+                'success' => false,
+                'message' => 'Akses denied !',
+            ];
+            return response()->json($data, 404);
+        }
         $validator = Validator::make($request->all(), [
             'nama_dusun' => 'required',
         ], [
@@ -102,6 +109,13 @@ class DusunController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if ($request->input('api-key') != env('API_KEY')) {
+            $data = [
+                'success' => false,
+                'message' => 'Akses denied !',
+            ];
+            return response()->json($data, 404);
+        }
         $validator = Validator::make($request->all(), [
             'nama_dusun' => 'required',
         ], [
@@ -143,8 +157,15 @@ class DusunController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
+        if ($request->input('api-key') != env('API_KEY')) {
+            $data = [
+                'success' => false,
+                'message' => 'Akses denied !',
+            ];
+            return response()->json($data, 404);
+        }
         $dusun = Dusun::find($id);
 
         if ($dusun) {
