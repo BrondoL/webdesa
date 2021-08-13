@@ -13,7 +13,7 @@ class CreateDusunsTable extends Migration
      */
     public function up()
     {
-        Schema::create('dusuns', function (Blueprint $table) {
+        Schema::create('dusun', function (Blueprint $table) {
             $table->bigIncrements('dusun_id');
             $table->string('nama_dusun');
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateDusunsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dusuns');
+        Schema::dropIfExists('dusun');
     }
 }

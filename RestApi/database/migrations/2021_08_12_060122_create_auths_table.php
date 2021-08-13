@@ -13,7 +13,7 @@ class CreateAuthsTable extends Migration
      */
     public function up()
     {
-        Schema::create('auths', function (Blueprint $table) {
+        Schema::create('auth', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('username')->unique();
@@ -31,6 +31,6 @@ class CreateAuthsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('auths');
+        Schema::dropIfExists('auth');
     }
 }
