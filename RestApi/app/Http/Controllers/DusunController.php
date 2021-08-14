@@ -61,13 +61,13 @@ class DusunController extends Controller
             if ($auth) {
                 $data = [
                     'success' => true,
-                    'message' => 'Akun berhasil disimpan',
+                    'message' => 'Dusun berhasil disimpan',
                 ];
                 return response()->json($data, 200);
             } else {
                 $data = [
                     'success' => false,
-                    'message' => 'Akun gagal disimpan',
+                    'message' => 'Dusun gagal disimpan',
                 ];
                 return response()->json($data, 400);
             }
@@ -182,5 +182,15 @@ class DusunController extends Controller
             ];
             return response()->json($data, 404);
         }
+    }
+
+    public function getDusun()
+    {
+        $data = [
+            'success' => true,
+            'message' => 'Total dusun di desa Pandan Makmur',
+            'data' => Dusun::count(),
+        ];
+        return response()->json($data, 200);
     }
 }

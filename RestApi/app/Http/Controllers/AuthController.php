@@ -49,8 +49,8 @@ class AuthController extends Controller
         }
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'username' => 'required|unique:auths,username',
-            'email' => 'required|unique:auths,email|email:rfc,dns',
+            'username' => 'required|unique:auth,username',
+            'email' => 'required|unique:auth,email|email:rfc,dns',
             'password' => 'min:8|required_with:password_confirmation|confirmed',
         ], [
             'name.required' => 'Masukkan username !',
@@ -228,7 +228,7 @@ class AuthController extends Controller
                 'message' => 'Silahkan isi form dengan benar',
                 'data' => $validator->errors(),
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         } else {
             $username = $request->input('username');
             $password = $request->input('password');
@@ -238,17 +238,17 @@ class AuthController extends Controller
                 $data = [
                     'success' => false,
                     'message' => 'Username tidak ditemukan!',
-                    'data' => ['username' => ["Username tidak ditemukan!"]],
+                    'data' => ['username' => "Username tidak ditemukan!"],
                 ];
-                return response()->json($data, 400);
+                return response()->json($data, 200);
             } else {
                 if (!Hash::check($password, $row->password)) {
                     $data = [
                         'success' => false,
                         'message' => 'Password salah!',
-                        'data' => ['password' => ["Password salah!"]],
+                        'data' => ['password' => "Password salah!"],
                     ];
-                    return response()->json($data, 400);
+                    return response()->json($data, 200);
                 } else {
                     $data = [
                         'success' => true,

@@ -254,4 +254,14 @@ class WargaController extends Controller
             return response()->json($data, 404);
         }
     }
+
+    public function getWarga()
+    {
+        $data = [
+            'success' => true,
+            'message' => 'Total warga di desa Pandan Makmur',
+            'data' => Warga::count(),
+        ];
+        return response()->json($data, 200);
+    }
 }
