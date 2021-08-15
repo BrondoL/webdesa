@@ -36,6 +36,11 @@ if (!isset($_SESSION["login"])) {
                                     </tr>
                                 </thead>
                                 <tbody class="data-dusun">
+                                    <tr>
+                                        <td colspan="3" class="text-center">
+                                            <strong>Belum ada data</strong>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -122,17 +127,19 @@ if (!isset($_SESSION["login"])) {
             success: function(response) {
                 if (response.success) {
                     let data = "";
-                    response.data.forEach((val, i) => {
-                        data += `<tr>
-                                        <td>${i+1}</td>
-                                        <td class="text-bold-500">${val.nama_dusun}</td>
-                                        <td class="align-middle">
-                                            <button class="btn btn-warning btn-sm" onclick="show(${val.dusun_id})" data-bs-toggle="modal" data-bs-target="#modaledit"><i class="fas fa-tags"></i></button>
-                                            <button class="btn btn-danger btn-sm" onclick="hapus(${val.dusun_id})"><i class="fas fa-trash"></i></button>
-                                        </td>
-                                    </tr>`;
-                    });
-                    $('.data-dusun').html(data);
+                    if (response.data.length != 0) {
+                        response.data.forEach((val, i) => {
+                            data += `<tr>
+                                            <td>${i+1}</td>
+                                            <td class="text-bold-500">${val.nama_dusun}</td>
+                                            <td class="align-middle">
+                                                <button class="btn btn-warning btn-sm" onclick="show(${val.dusun_id})" data-bs-toggle="modal" data-bs-target="#modaledit"><i class="fas fa-tags"></i></button>
+                                                <button class="btn btn-danger btn-sm" onclick="hapus(${val.dusun_id})"><i class="fas fa-trash"></i></button>
+                                            </td>
+                                        </tr>`;
+                        });
+                        $('.data-dusun').html(data);
+                    }
                 }
             }
         });
@@ -208,6 +215,13 @@ if (!isset($_SESSION["login"])) {
                         $('.errorNama').html('');
                         getData();
                         $('#inlineForm').modal('hide');
+                        Swal.fire({
+                            title: "Berhasil!",
+                            text: response.sukses,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
                     } else {
                         if (response.data.nama_dusun) {
                             $('#nama_dusun').addClass('is-invalid');
