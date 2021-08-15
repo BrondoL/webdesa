@@ -49,6 +49,7 @@ class WargaController extends Controller
         } else {
             $validator = Validator::make($request->all(), [
                 'nama_warga' => 'required',
+                'dusun_id' => 'required',
                 'jenis_kelamin' => 'required',
                 'tempat_lahir' => 'required',
                 'tanggal_lahir' => 'required',
@@ -60,6 +61,7 @@ class WargaController extends Controller
                 'no_kk' => 'required',
             ], [
                 'nama_warga.required' => 'Masukkan nama warga !',
+                'dusun_id.required' => 'Masukkan dusun !',
                 'jenis_kelamin.required' => 'Masukkan jenis kelamin !',
                 'tempat_lahir.required' => 'Masukkan tempat lahir !',
                 'tanggal_lahir.required' => 'Masukkan tanggal lahir !',
@@ -81,6 +83,7 @@ class WargaController extends Controller
             } else {
                 $simpan = [
                     'nama_warga' => $request->input('nama_warga'),
+                    'dusun_id' => $request->input('dusun_id'),
                     'jenis_kelamin' => $request->input('jenis_kelamin'),
                     'tempat_lahir' => $request->input('tempat_lahir'),
                     'tanggal_lahir' => $request->input('tanggal_lahir'),
@@ -162,6 +165,7 @@ class WargaController extends Controller
 
         $validator = Validator::make($request->all(), [
             'nama_warga' => 'required',
+            'dusun_id' => 'required',
             'jenis_kelamin' => 'required',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
@@ -173,6 +177,7 @@ class WargaController extends Controller
             'no_kk' => 'required',
         ], [
             'nama_warga.required' => 'Masukkan nama warga !',
+            'dusun_id.required' => 'Masukkan dusun !',
             'jenis_kelamin.required' => 'Masukkan jenis kelamin !',
             'tempat_lahir.required' => 'Masukkan tempat lahir !',
             'tanggal_lahir.required' => 'Masukkan tanggal lahir !',
@@ -194,6 +199,7 @@ class WargaController extends Controller
         } else {
             $update = [
                 'nama_warga' => $request->input('nama_warga'),
+                'dusun_id' => $request->input('dusun_id'),
                 'jenis_kelamin' => $request->input('jenis_kelamin'),
                 'tempat_lahir' => $request->input('tempat_lahir'),
                 'tanggal_lahir' => $request->input('tanggal_lahir'),

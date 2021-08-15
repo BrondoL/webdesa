@@ -15,7 +15,7 @@ class CreateDusunsTable extends Migration
     {
         Schema::create('dusun', function (Blueprint $table) {
             $table->bigIncrements('dusun_id');
-            $table->string('nama_dusun');
+            $table->string('nama_dusun')->unique();
             $table->timestamps();
         });
     }

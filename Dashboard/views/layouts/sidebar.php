@@ -15,7 +15,7 @@
                 <li class="sidebar-title">Menu</li>
 
                 <li class="sidebar-item active ">
-                    <a href="index.html" class='sidebar-link'>
+                    <a href="/" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
                     </a>
@@ -24,15 +24,15 @@
                 <li class="sidebar-title">Data Master</li>
 
                 <li class="sidebar-item">
-                    <a href="index.html" class='sidebar-link'>
+                    <a href="/?page=dusun" class='sidebar-link'>
                         <i class="bi bi-house-door-fill"></i>
                         <span>Dusun</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item">
-                    <a href="index.html" class='sidebar-link'>
-                        <i class="bi bi-people-fill"></i>
+                    <a href="/?page=warga" class='sidebar-link'>
+                        <i class=" bi bi-people-fill"></i>
                         <span>Warga</span>
                     </a>
                 </li>
@@ -40,7 +40,7 @@
                 <hr>
 
                 <li class="sidebar-item">
-                    <a href="logout.php" class='sidebar-link' onclick="return confirm('Apakah anda ingin logout ?');">
+                    <a href="/logout.php" class='sidebar-link' onclick="return confirm('Apakah anda ingin logout ?');">
                         <i class="bi bi-box-arrow-right"></i>
                         <span>Logout</span>
                     </a>

@@ -37,12 +37,13 @@ class DusunController extends Controller
                 'success' => false,
                 'message' => 'Akses denied !',
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
         $validator = Validator::make($request->all(), [
-            'nama_dusun' => 'required',
+            'nama_dusun' => 'required|unique:dusun,nama_dusun',
         ], [
             'nama_dusun.required' => 'Masukkan nama dusun !',
+            'nama_dusun.unique' => 'Nama dusun sudah ada !',
         ]);
 
         if ($validator->fails()) {
@@ -51,7 +52,7 @@ class DusunController extends Controller
                 'message' => 'Silahkan isi form dengan benar',
                 'data' => $validator->errors(),
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         } else {
             $simpan = [
                 'nama_dusun' => $request->input('nama_dusun'),
@@ -69,7 +70,7 @@ class DusunController extends Controller
                     'success' => false,
                     'message' => 'Dusun gagal disimpan',
                 ];
-                return response()->json($data, 400);
+                return response()->json($data, 200);
             }
         }
     }
@@ -96,7 +97,7 @@ class DusunController extends Controller
                 'message' => 'Dusun tidak ditemukan',
                 'data' => ''
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
     }
 
@@ -107,19 +108,20 @@ class DusunController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Dusun $dusun)
     {
         if ($request->input('api-key') != env('API_KEY')) {
             $data = [
                 'success' => false,
                 'message' => 'Akses denied !',
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
         $validator = Validator::make($request->all(), [
-            'nama_dusun' => 'required',
+            'nama_dusun' => 'required|unique:dusun,nama_dusun,' . $dusun->dusun_id . ',dusun_id',
         ], [
             'nama_dusun.required' => 'Masukkan nama dusun !',
+            'nama_dusun.unique' => 'Nama dusun sudah ada !',
         ]);
 
         if ($validator->fails()) {
@@ -128,12 +130,12 @@ class DusunController extends Controller
                 'message' => 'Silahkan isi form dengan benar',
                 'data' => $validator->errors(),
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         } else {
             $update = [
                 'nama_dusun' => $request->input('nama_dusun'),
             ];
-            $dusun = Dusun::where('dusun_id', $id)->update($update);
+            $dusun = Dusun::where('dusun_id', $dusun->dusun_id)->update($update);
 
             if ($dusun) {
                 $data = [
@@ -146,7 +148,7 @@ class DusunController extends Controller
                     'success' => false,
                     'message' => 'Dusun gagal diupdate',
                 ];
-                return response()->json($data, 404);
+                return response()->json($data, 200);
             }
         }
     }
@@ -164,7 +166,7 @@ class DusunController extends Controller
                 'success' => false,
                 'message' => 'Akses denied !',
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
         $dusun = Dusun::find($id);
 
@@ -180,7 +182,7 @@ class DusunController extends Controller
                 'success' => false,
                 'message' => 'Dusun gagal dihapus',
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
     }
 
