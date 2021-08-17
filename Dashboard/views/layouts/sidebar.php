@@ -14,7 +14,7 @@
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
 
-                <li class="sidebar-item active ">
+                <li class="sidebar-item <?= (!$_GET['page']) ? 'active' : ''; ?>">
                     <a href="/" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
                         <span>Dashboard</span>
@@ -23,14 +23,14 @@
 
                 <li class="sidebar-title">Data Master</li>
 
-                <li class="sidebar-item">
+                <li class="sidebar-item <?= ($_GET['page'] == 'dusun') ? 'active' : ''; ?>">
                     <a href="/?page=dusun" class='sidebar-link'>
                         <i class="bi bi-house-door-fill"></i>
                         <span>Dusun</span>
                     </a>
                 </li>
 
-                <li class="sidebar-item">
+                <li class="sidebar-item <?= ($_GET['page'] == 'warga') ? 'active' : ''; ?>">
                     <a href="/?page=warga" class='sidebar-link'>
                         <i class=" bi bi-people-fill"></i>
                         <span>Warga</span>

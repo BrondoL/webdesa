@@ -5,7 +5,7 @@ session_start();
 if (isset($_SESSION["login"])) {
     echo "
 				<script>
-					document.location.href = 'index.php';
+					document.location.href = '/';
 				</script>
 			";
 }
@@ -15,14 +15,14 @@ if (isset($_POST['submit'])) {
         'username' => $_POST['username'],
         'password' => $_POST['password'],
     ];
-    $make_call = callAPI('POST', 'http://restapi.test/api/auth/login', json_encode($data));
+    $make_call = callAPI('POST', 'http://localhost:8000/api/auth/login', json_encode($data));
     $response = json_decode($make_call, true);
     if ($response['success']) {
         $_SESSION["login"] = true;
-        $_SESSION["username"] = $response['username'];
-        $_SESSION["email"] = $response['email'];
-        $_SESSION["nama"] = $response['nama'];
-        $_SESSION["role_id"] = $response['role_id'];
+        $_SESSION["username"] = $response['data']['username'];
+        $_SESSION["email"] = $response['data']['email'];
+        $_SESSION["nama"] = $response['data']['nama'];
+        $_SESSION["role_id"] = $response['data']['role_id'];
         echo "
                     <script>
                         alert('Login Success!');

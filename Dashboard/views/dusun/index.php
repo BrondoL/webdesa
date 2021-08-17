@@ -129,7 +129,7 @@ if (!isset($_SESSION["login"])) {
                     let data = "";
                     if (response.data.length != 0) {
                         response.data.forEach((val, i) => {
-                            data += `<tr>
+                            data += `<tr class="text-dark">
                                             <td>${i+1}</td>
                                             <td class="text-bold-500">${val.nama_dusun}</td>
                                             <td class="align-middle">

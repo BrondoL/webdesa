@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Warga;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class WargaController extends Controller
 {
@@ -20,13 +21,13 @@ class WargaController extends Controller
                 'success' => false,
                 'message' => 'Akses denied !',
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         } else {
             $warga = Warga::all();
             $data = [
                 'success' => true,
                 'message' => 'List Semua Warga',
-                'data' => $warga
+                'data' => DB::table('warga')->join('dusun', 'warga.dusun_id', '=', 'dusun.dusun_id')->get()
             ];
             return response($data, 200);
         }
@@ -45,31 +46,24 @@ class WargaController extends Controller
                 'success' => false,
                 'message' => 'Akses denied !',
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         } else {
             $validator = Validator::make($request->all(), [
                 'nama_warga' => 'required',
-                'dusun_id' => 'required',
-                'jenis_kelamin' => 'required',
                 'tempat_lahir' => 'required',
                 'tanggal_lahir' => 'required',
                 'pekerjaan' => 'required',
-                'pendidikan' => 'required',
                 'agama' => 'required',
-                'status_perkawinan' => 'required',
-                'no_ktp' => 'required',
+                'no_ktp' => 'required|unique:warga,no_ktp',
                 'no_kk' => 'required',
             ], [
-                'nama_warga.required' => 'Masukkan nama warga !',
-                'dusun_id.required' => 'Masukkan dusun !',
-                'jenis_kelamin.required' => 'Masukkan jenis kelamin !',
+                'nama_warga.required' => 'Masukkan nama anda !',
                 'tempat_lahir.required' => 'Masukkan tempat lahir !',
                 'tanggal_lahir.required' => 'Masukkan tanggal lahir !',
                 'pekerjaan.required' => 'Masukkan pekerjaan !',
-                'pendidikan.required' => 'Masukkan pendidikan !',
                 'agama.required' => 'Masukkan agama !',
-                'status_perkawinan.required' => 'Masukkan status perkawinan!',
                 'no_ktp.required' => 'Masukkan nomor ktp !',
+                'no_ktp.unique' => 'Nomor ktp sudah ada !',
                 'no_kk.required' => 'Masukkan nomor kk !',
             ]);
 
@@ -79,7 +73,7 @@ class WargaController extends Controller
                     'message' => 'Silahkan isi form dengan benar',
                     'data' => $validator->errors(),
                 ];
-                return response()->json($data, 400);
+                return response()->json($data, 200);
             } else {
                 $simpan = [
                     'nama_warga' => $request->input('nama_warga'),
@@ -107,7 +101,7 @@ class WargaController extends Controller
                         'success' => false,
                         'message' => 'Data warga gagal disimpan',
                     ];
-                    return response()->json($data, 400);
+                    return response()->json($data, 200);
                 }
             }
         }
@@ -126,9 +120,9 @@ class WargaController extends Controller
                 'success' => false,
                 'message' => 'Akses denied !',
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         } else {
-            $warga = Warga::where('warga_id', $id)->first();
+            $warga = DB::table('warga')->join('dusun', 'warga.dusun_id', '=', 'dusun.dusun_id')->where('warga_id', $id)->first();
             if ($warga) {
                 $data = [
                     'success' => true,
@@ -141,7 +135,7 @@ class WargaController extends Controller
                     'success' => false,
                     'message' => 'Warga tidak ditemukan',
                 ];
-                return response()->json($data, 404);
+                return response()->json($data, 200);
             }
         }
     }
@@ -160,7 +154,7 @@ class WargaController extends Controller
                 'success' => false,
                 'message' => 'Akses denied !',
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
 
         $validator = Validator::make($request->all(), [
@@ -195,7 +189,7 @@ class WargaController extends Controller
                 'message' => 'Silahkan isi form dengan benar',
                 'data' => $validator->errors(),
             ];
-            return response()->json($data, 400);
+            return response()->json($data, 200);
         } else {
             $update = [
                 'nama_warga' => $request->input('nama_warga'),
@@ -223,7 +217,7 @@ class WargaController extends Controller
                     'success' => false,
                     'message' => 'Warga gagal diupdate',
                 ];
-                return response()->json($data, 404);
+                return response()->json($data, 200);
             }
         }
     }
@@ -241,7 +235,7 @@ class WargaController extends Controller
                 'success' => false,
                 'message' => 'Akses denied !',
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
         $warga = Warga::find($id);
 
@@ -257,7 +251,7 @@ class WargaController extends Controller
                 'success' => false,
                 'message' => 'Warga gagal dihapus',
             ];
-            return response()->json($data, 404);
+            return response()->json($data, 200);
         }
     }
 
