@@ -11,4 +11,10 @@ class Warga extends Model
     protected $guarded = [
         'warga_id'
     ];
+    protected $with = ['dusun'];
+
+    public function dusun()
+    {
+        return $this->belongsTo(Dusun::class, 'dusun_id', 'dusun_id');
+    }
 }

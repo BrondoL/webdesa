@@ -15,7 +15,7 @@ class CreateWargasTable extends Migration
     {
         Schema::create('warga', function (Blueprint $table) {
             $table->bigIncrements('warga_id');
-            $table->bigInteger('dusun_id');
+            $table->foreignId('dusun_id');
             $table->string('nama_warga');
             $table->string('jenis_kelamin');
             $table->string('tempat_lahir');

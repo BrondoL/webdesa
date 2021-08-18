@@ -23,11 +23,10 @@ class WargaController extends Controller
             ];
             return response()->json($data, 200);
         } else {
-            $warga = Warga::all();
             $data = [
                 'success' => true,
                 'message' => 'List Semua Warga',
-                'data' => DB::table('warga')->join('dusun', 'warga.dusun_id', '=', 'dusun.dusun_id')->get()
+                'data' => DB::table('warga')->leftJoin('dusun', 'warga.dusun_id', '=', 'dusun.dusun_id')->orderBy('warga.created_at', 'desc')->get(),
             ];
             return response($data, 200);
         }
@@ -122,7 +121,7 @@ class WargaController extends Controller
             ];
             return response()->json($data, 200);
         } else {
-            $warga = DB::table('warga')->join('dusun', 'warga.dusun_id', '=', 'dusun.dusun_id')->where('warga_id', $id)->first();
+            $warga = DB::table('warga')->leftJoin('dusun', 'warga.dusun_id', '=', 'dusun.dusun_id')->where('warga_id', $id)->first();
             if ($warga) {
                 $data = [
                     'success' => true,
@@ -147,7 +146,7 @@ class WargaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Warga $warga)
     {
         if ($request->input('api-key') != env('API_KEY')) {
             $data = [
@@ -159,27 +158,20 @@ class WargaController extends Controller
 
         $validator = Validator::make($request->all(), [
             'nama_warga' => 'required',
-            'dusun_id' => 'required',
-            'jenis_kelamin' => 'required',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
             'pekerjaan' => 'required',
-            'pendidikan' => 'required',
             'agama' => 'required',
-            'status_perkawinan' => 'required',
-            'no_ktp' => 'required',
+            'no_ktp' => 'required|unique:warga,no_ktp,' . $warga->warga_id . ',warga_id',
             'no_kk' => 'required',
         ], [
-            'nama_warga.required' => 'Masukkan nama warga !',
-            'dusun_id.required' => 'Masukkan dusun !',
-            'jenis_kelamin.required' => 'Masukkan jenis kelamin !',
+            'nama_warga.required' => 'Masukkan nama anda !',
             'tempat_lahir.required' => 'Masukkan tempat lahir !',
             'tanggal_lahir.required' => 'Masukkan tanggal lahir !',
             'pekerjaan.required' => 'Masukkan pekerjaan !',
-            'pendidikan.required' => 'Masukkan pendidikan !',
             'agama.required' => 'Masukkan agama !',
-            'status_perkawinan.required' => 'Masukkan status perkawinan!',
             'no_ktp.required' => 'Masukkan nomor ktp !',
+            'no_ktp.unique' => 'Nomor ktp sudah ada !',
             'no_kk.required' => 'Masukkan nomor kk !',
         ]);
 
@@ -204,7 +196,7 @@ class WargaController extends Controller
                 'no_ktp' => $request->input('no_ktp'),
                 'no_kk' => $request->input('no_kk'),
             ];
-            $warga = Warga::where('warga_id', $id)->update($update);
+            $warga = Warga::where('warga_id', $warga->warga_id)->update($update);
 
             if ($warga) {
                 $data = [

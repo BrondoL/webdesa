@@ -15,7 +15,7 @@ class DusunController extends Controller
      */
     public function index()
     {
-        $dusuns = Dusun::all();
+        $dusuns = Dusun::latest()->get();
         $data = [
             'success' => true,
             'message' => 'List Semua Dusun',

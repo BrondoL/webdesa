@@ -14,6 +14,8 @@ if (!isset($_SESSION["login"])) {
 $get_data = callAPI('GET', $endpoint . "warga?api-key=" . $api_key, false);
 $response = json_decode($get_data, true);
 $data = $response['data'];
+// var_dump($get_data);
+// die;
 
 ?>
 
@@ -48,7 +50,7 @@ $data = $response['data'];
                                 <tbody class="data-dusun">
                                     <?php if (count($data) == 0) : ?>
                                         <tr>
-                                            <td colspan="5" class="text-center">
+                                            <td colspan="6" class="text-center">
                                                 <strong>Belum ada data</strong>
                                             </td>
                                         </tr>
@@ -212,6 +214,7 @@ $data = $response['data'];
                     <div class="row">
                         <div class="col-4">
                             <input type="hidden" name="api-key" value="<?= $api_key; ?>">
+                            <input type="hidden" name="id" id="idedit">
                             <label>Nama: </label>
                             <div class="form-group">
                                 <input type="text" placeholder="Nama lengkap..." class="form-control" id="nama_wargaedit" name="nama_warga">
@@ -417,6 +420,7 @@ $data = $response['data'];
                 if (response.success) {
                     getDusun(response.data.dusun_id);
                     $('#optiondusun' + response.data.dusun_id).attr("selected", "selected");
+                    $('input#idedit').val(response.data.warga_id);
                     $('input#nama_wargaedit').val(response.data.nama_warga);
                     $('input#nama_dusunedit').val(response.data.nama_dusun);
                     let jenis_kelamin = `
@@ -600,11 +604,11 @@ $data = $response['data'];
         });
 
         $('.formedit').submit(function(e) {
-            let id = $('#editid').val();
+            let id = $('#idedit').val();
             e.preventDefault();
             $.ajax({
                 type: "PUT",
-                url: "<?= $endpoint ?>" + "dusun/" + id,
+                url: "<?= $endpoint ?>" + "warga/" + id,
                 data: $(this).serialize(),
                 dataType: "json",
                 beforeSend: function() {
@@ -616,8 +620,8 @@ $data = $response['data'];
                     $('.btnedit').html('<i class="fa fa-share-square"></i>  Update');
                 },
                 success: function(response) {
+                    console.log(response)
                     if (response.success) {
-                        getData();
                         $('#modaledit').modal('hide');
                         Swal.fire({
                             title: "Berhasil!",
@@ -625,14 +629,56 @@ $data = $response['data'];
                             icon: "success",
                             showConfirmButton: false,
                             timer: 1500
-                        });
+                        }).then(() => window.location.href = "/?page=warga");
                     } else {
-                        if (response.data.nama_dusun) {
-                            $('#editnama_dusun').addClass('is-invalid');
-                            $('#editerrorNama').html(response.data.nama_dusun[0]);
+                        if (response.data.nama_warga) {
+                            $('#nama_wargaedit').addClass('is-invalid');
+                            $('#errorNamaedit').html(response.data.nama_warga[0]);
                         } else {
-                            $('#editnama_dusun').removeClass('is-invalid');
-                            $('.editerrorNama').html('');
+                            $('#nama_wargaedit').removeClass('is-invalid');
+                            $('.errorNamaedit').html('');
+                        }
+                        if (response.data.tempat_lahir) {
+                            $('#tempat_lahiredit').addClass('is-invalid');
+                            $('#errorTempatLahiredit').html(response.data.tempat_lahir[0]);
+                        } else {
+                            $('#tempat_lahiredit').removeClass('is-invalid');
+                            $('.errorTempatLahiredit').html('');
+                        }
+                        if (response.data.tanggal_lahir) {
+                            $('#tanggal_lahiredit').addClass('is-invalid');
+                            $('#errorTanggalLahiredit').html(response.data.tanggal_lahir[0]);
+                        } else {
+                            $('#tanggal_lahiredit').removeClass('is-invalid');
+                            $('.errorTanggalLahiredit').html('');
+                        }
+                        if (response.data.pekerjaan) {
+                            $('#pekerjaanedit').addClass('is-invalid');
+                            $('#errorPekerjaanedit').html(response.data.pekerjaan[0]);
+                        } else {
+                            $('#pekerjaanedit').removeClass('is-invalid');
+                            $('.errorPekerjaanedit').html('');
+                        }
+                        if (response.data.agama) {
+                            $('#agamaedit').addClass('is-invalid');
+                            $('#errorAgamaedit').html(response.data.agama[0]);
+                        } else {
+                            $('#agamaedit').removeClass('is-invalid');
+                            $('.errorAgamaedit').html('');
+                        }
+                        if (response.data.no_kk) {
+                            $('#no_kkedit').addClass('is-invalid');
+                            $('#errorNo_kkedit').html(response.data.no_kk[0]);
+                        } else {
+                            $('#no_kkedit').removeClass('is-invalid');
+                            $('.errorNo_kkedit').html('');
+                        }
+                        if (response.data.no_ktp) {
+                            $('#no_ktpedit').addClass('is-invalid');
+                            $('#errorNo_ktpedit').html(response.data.no_ktp[0]);
+                        } else {
+                            $('#no_ktpedit').removeClass('is-invalid');
+                            $('.errorNo_ktpedit').html('');
                         }
                     }
                 }
