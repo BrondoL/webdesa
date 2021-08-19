@@ -265,7 +265,7 @@ class WargaController extends Controller
             count(CASE WHEN warga.jenis_kelamin = 'Laki-Laki' THEN 1 END) AS `Jumlah Laki Laki`,
             count(CASE WHEN warga.jenis_kelamin = 'Perempuan' THEN 1 END) AS `Jumlah Perempuan`,
             count(DISTINCT no_kk) AS `Jumlah Keluarga`"))
-            ->groupBy('dusun.dusun_id')
+            ->groupBy('dusun.dusun_id', 'dusun.nama_dusun')
             ->get();
         $data_seluruh = DB::table('warga')
             ->select(DB::raw("count(warga_id) AS `Jumlah Penduduk`,
