@@ -256,4 +256,27 @@ class WargaController extends Controller
         ];
         return response()->json($data, 200);
     }
+
+    public function getWargaDetail()
+    {
+        $data_dusun = DB::table('warga')
+            ->leftJoin('dusun', 'warga.dusun_id', '=', 'dusun.dusun_id')
+            ->select(DB::raw("dusun.dusun_id, nama_dusun, count(warga_id) AS `Jumlah Penduduk`,
+            count(CASE WHEN warga.jenis_kelamin = 'Laki-Laki' THEN 1 END) AS `Jumlah Laki Laki`,
+            count(CASE WHEN warga.jenis_kelamin = 'Perempuan' THEN 1 END) AS `Jumlah Perempuan`,
+            count(DISTINCT no_kk) AS `Jumlah Keluarga`"))
+            ->groupBy('dusun.dusun_id')
+            ->get();
+        $data_seluruh = DB::table('warga')
+            ->select(DB::raw("count(warga_id) AS `Jumlah Penduduk`,
+            count(CASE WHEN jenis_kelamin = 'Laki-Laki' THEN 1 END) AS `Jumlah Laki-Laki`,
+            count(CASE WHEN jenis_kelamin = 'Perempuan' THEN 1 END) AS `Jumlah Perempuan`,
+            count(DISTINCT no_kk) AS `Jumlah Keluarga`"))
+            ->get();
+        $data = [
+            'datadusun' => $data_dusun,
+            'dataseluruh' => $data_seluruh,
+        ];
+        return response()->json($data, 200);
+    }
 }

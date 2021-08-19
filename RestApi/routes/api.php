@@ -24,6 +24,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login');
 Route::get('/dusun/total', [DusunController::class, 'getDusun'])->name('dusun.getDusun');
 Route::get('/warga/total', [WargaController::class, 'getWarga'])->name('warga.getWarga');
+Route::get('/fetch_data', [WargaController::class, 'getWargaDetail'])->name('warga.getWargaDetail');
 Route::resource('auth', AuthController::class);
 Route::resource('dusun', DusunController::class);
 Route::resource('warga', WargaController::class);
